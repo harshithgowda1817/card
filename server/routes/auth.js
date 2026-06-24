@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import jwt from 'jsonwebtoken';
-import Admin from '../models/Admin.js';
 import auth from '../middleware/auth.js';
+import { verifyAdmin } from '../mock-data.js';
 
 const router = Router();
 
@@ -12,18 +12,13 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ message: 'Username and password required' });
     }
 
-    const admin = await Admin.findOne({ username });
-    if (!admin) {
-      return res.status(401).json({ message: 'Invalid credentials' });
-    }
-
-    const isMatch = await admin.comparePassword(password);
-    if (!isMatch) {
+    const valid = await verifyAdmin(username, password);
+    if (!valid) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 
     const token = jwt.sign(
-      { id: admin._id, username: admin.username },
+      { id: 'admin', username },
       process.env.JWT_SECRET,
       { expiresIn: '7d' }
     );
