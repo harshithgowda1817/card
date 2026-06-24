@@ -17,20 +17,20 @@ let cachedDb = null;
 
 async function connectDB() {
   if (cachedDb && mongoose.connection.readyState === 1) return;
-  try {
-    cachedDb = await mongoose.connect(process.env.MONGO_URI);
-    console.log('MongoDB connected');
-  } catch (err) {
-    console.error('MongoDB connection error:', err.message);
-    throw err;
-  }
+  cachedDb = await mongoose.connect(process.env.MONGO_URI);
 }
+
+app.use((err, _req, res, _next) => {
+  console.error('Unhandled error:', err);
+  res.status(500).json({ message: err.message || 'Server error' });
+});
 
 export default async function handler(req, res) {
   try {
     await connectDB();
-    return app(req, res);
+    app(req, res);
   } catch (err) {
-    res.status(500).json({ message: 'Server error' });
+    console.error('Handler error:', err);
+    res.status(500).json({ message: err.message || 'Server error' });
   }
 }

@@ -14,6 +14,11 @@ app.use(express.json());
 app.use('/api', apiRoutes);
 app.use('/api/auth', authRoutes);
 
+app.use((err, _req, res, _next) => {
+  console.error('Unhandled error:', err);
+  res.status(500).json({ message: err.message || 'Server error' });
+});
+
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
     console.log('Connected to MongoDB');
