@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { AnimatePresence, motion } from 'motion/react';
 import Profile from './components/Profile';
 import LinkList from './components/LinkList';
 import Footer from './components/Footer';
@@ -35,19 +36,33 @@ function PublicPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-[#0f0f0f] flex items-center justify-center">
-        <div className="w-5 h-5 rounded-full border border-white/20 border-t-white/60 animate-spin" />
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.3 }}
+          className="w-5 h-5 rounded-full border border-white/20 border-t-white/60 animate-spin"
+        />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#0f0f0f] flex flex-col items-center justify-center px-4 py-12">
-      <div className="flex flex-col items-center gap-8 w-full max-w-sm">
-        {profile && <Profile name={profile.name} bio={profile.bio} />}
-        {links.length > 0 && <LinkList links={links} />}
-        <Footer />
-      </div>
-    </div>
+    <AnimatePresence mode="wait">
+      <motion.div
+        key="page"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.3 }}
+        className="min-h-screen bg-[#0f0f0f] flex flex-col items-center justify-center px-4 py-12"
+      >
+        <div className="flex flex-col items-center gap-8 w-full max-w-sm">
+          {profile && <Profile name={profile.name} bio={profile.bio} />}
+          {links.length > 0 && <LinkList links={links} />}
+          <Footer />
+        </div>
+      </motion.div>
+    </AnimatePresence>
   );
 }
 
