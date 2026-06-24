@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'motion/react';
+import { FlickeringGrid } from '@/components/ui/flickering-grid';
 import Profile from './components/Profile';
 import LinkList from './components/LinkList';
 import Footer from './components/Footer';
@@ -54,12 +55,22 @@ function PublicPage() {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.3 }}
-        className="min-h-screen bg-[#0f0f0f] flex flex-col items-center justify-center px-4 py-12"
+        className="min-h-screen bg-[#0f0f0f] relative overflow-hidden"
       >
-        <div className="flex flex-col items-center gap-8 w-full max-w-sm">
-          {profile && <Profile name={profile.name} bio={profile.bio} />}
-          {links.length > 0 && <LinkList links={links} />}
-          <Footer />
+        <FlickeringGrid
+          className="fixed inset-0 z-0"
+          squareSize={4}
+          gridGap={6}
+          color="rgb(255, 255, 255)"
+          maxOpacity={0.04}
+          flickerChance={0.05}
+        />
+        <div className="relative z-10 flex flex-col items-center justify-center px-4 py-12 min-h-screen">
+          <div className="flex flex-col items-center gap-8 w-full max-w-sm">
+            {profile && <Profile name={profile.name} bio={profile.bio} />}
+            {links.length > 0 && <LinkList links={links} />}
+            <Footer />
+          </div>
         </div>
       </motion.div>
     </AnimatePresence>

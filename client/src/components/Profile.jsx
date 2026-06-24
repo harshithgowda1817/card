@@ -2,9 +2,9 @@ import { motion } from 'motion/react';
 import { GitHubLogo, LinkedInLogo, TwitterLogo } from './logos';
 
 const socialLinks = [
-  { icon: GitHubLogo, url: 'https://github.com/harshithgowda1817', label: 'GitHub' },
-  { icon: LinkedInLogo, url: 'https://www.linkedin.com/in/harshith-gowda-8783382a7/', label: 'LinkedIn' },
-  { icon: TwitterLogo, url: 'https://x.com/Harshithg1817', label: 'X' },
+  { icon: GitHubLogo, url: 'https://github.com/harshithgowda1817', label: 'GitHub', color: '#c9d1d9' },
+  { icon: LinkedInLogo, url: 'https://www.linkedin.com/in/harshith-gowda-8783382a7/', label: 'LinkedIn', color: '#0a66c2' },
+  { icon: TwitterLogo, url: 'https://x.com/Harshithg1817', label: 'X', color: '#e7e9ea' },
 ];
 
 export default function Profile({ name, bio }) {
@@ -37,14 +37,17 @@ export default function Profile({ name, bio }) {
         transition={{ delay: 0.3, duration: 0.4 }}
         className="flex items-center gap-3"
       >
-        {socialLinks.map(({ icon: Icon, url, label }) => (
+        {socialLinks.map(({ icon: Icon, url, label, color }) => (
           <a
             key={label}
             href={url}
             target="_blank"
             rel="noopener noreferrer"
             aria-label={label}
-            className="w-9 h-9 rounded-full bg-gradient-to-b from-[#202020] to-[#191919] shadow-[0_1px_0.5px_#ffffff1a_inset,0_1px_1px_#ffffff35_inset,0_4px_6px_-4px_#00000070,0_8px_8px_-8px_#00000060] flex items-center justify-center text-white/60 hover:text-white/90 transition-colors duration-150 active:scale-[0.95]"
+            className="w-9 h-9 rounded-full bg-gradient-to-b from-[#202020] to-[#191919] shadow-[0_1px_0.5px_#ffffff1a_inset,0_1px_1px_#ffffff35_inset,0_4px_6px_-4px_#00000070,0_8px_8px_-8px_#00000060] flex items-center justify-center transition-all duration-150 active:scale-[0.95]"
+            style={{ color: 'rgba(255,255,255,0.5)' }}
+            onMouseEnter={(e) => e.currentTarget.style.color = color}
+            onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(255,255,255,0.5)'}
           >
             <Icon className="w-4 h-4" />
           </a>
